@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="leftside">
+        <h3>JSON</h3>
+        <form id="form">
+            <textarea [(ngModel)]="jsonInput" [ngModelOptions]="{standalone: true}" placeholder="Escreva o JSON aqui." (change)="textAreaChange()"></textarea>
+            <input type="reset" value="Esvaziar Campo">
+        </form>
+    </div>
+    <div class="rightside">
+        <h3>CSV</h3>
+        <textarea disabled="true" id="output"></textarea>
+        <input type="submit" value="Fazer Download do Arquivo CSV" (click)="exportarParaCsv()">
+    </div>
+</div>
+

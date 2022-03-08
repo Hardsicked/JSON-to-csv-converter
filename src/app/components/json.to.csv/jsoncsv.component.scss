@@ -1,0 +1,39 @@
+input{
+    margin: 10px;
+}
+input[type=reset]{
+    border: 0px; 
+    padding: 10px; 
+    border-radius: 5px;
+    color: white;
+    background-color: red;
+    cursor: pointer;
+}
+input[type=submit]{
+    border: 0px; 
+    padding: 10px; 
+    border-radius: 5px;
+    color: white;
+    background-color: green;
+    cursor: pointer;
+}
+textarea{
+    display: flex;
+    width: 90%;
+    height: 20rem;
+    margin: 10px;
+}
+.container{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.leftside{
+    width: 50%;
+}
+.rightside{
+    width: 50%;
+}
+    
