@@ -19,8 +19,18 @@ export class JsonToCsvComponent implements OnInit {
 
   textAreaChange(){
     debugger;
-    this.csvOutput = "";
-    let json : string = this.jsonInput;
+    this.csvOutput = "";  
+    
+    this.csvOutput = this.convertJsonToCsv(this.jsonInput);
+
+    var element = document.getElementById("output");
+
+    if(element != null)
+      element.innerHTML = this.csvOutput;
+  }
+
+  convertJsonToCsv(json: string) : string {
+    let csvStringOutput : string = "";
     
     let char1,char2: string = "";
 
@@ -28,21 +38,20 @@ export class JsonToCsvComponent implements OnInit {
     char2 = json.charAt(json.length - 1);
 
     if(char1 === "{" && char2 === "}"){
-      var linhas = json.slice(1,-1).split(",");
 
-      this.convertJsonToCsv(linhas);
+      var linhasJson = json.slice(1,-1).split(",");
+
+      csvStringOutput = "data;text/csv;charset=utf-8, ";
       
+      linhasJson.forEach(item => {
+        csvStringOutput = csvStringOutput + item.replace(/['"]+/g,'').trim() + ", \r\n";
+      });
+
     }else{
-      this.csvOutput = "JSON inválido";
+
+      csvStringOutput = "JSON inválido";
+      
     }
-    
-    var element = document.getElementById("output");
-
-    if(element != null)
-      element.innerHTML = this.csvOutput;
-  }
-
-  async convertJsonToCsv(linhasJson: string[]){
     // let propriedades: string[] = [];
     // let data: {
     //   propriedade: string,
@@ -91,9 +100,9 @@ export class JsonToCsvComponent implements OnInit {
     //     this.csvOutput = item.valor + ",";
     //   })
     // }
-    linhasJson.forEach(item => {
-      this.csvOutput = this.csvOutput + item.replace(/['"]+/g,'').trim() + ",\n";
-    });
+    
+
+    return csvStringOutput;
   }
 
   exportarParaCsv(): void{
