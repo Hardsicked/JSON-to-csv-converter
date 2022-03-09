@@ -21,7 +21,7 @@ export class JsonToCsvComponent implements OnInit {
     debugger;
     this.csvOutput = "";  
     
-    this.csvOutput = this.convertJsonToCsv(this.jsonInput);
+    this.csvOutput = this.ConvertJsonToCsv(this.jsonInput);
 
     var element = document.getElementById("output");
 
@@ -29,81 +29,101 @@ export class JsonToCsvComponent implements OnInit {
       element.innerHTML = this.csvOutput;
   }
 
-  convertJsonToCsv(json: string) : string {
-    let csvStringOutput : string = "";
+  ConvertJsonToCsv(jsonString: string): string {
     
-    let char1,char2: string = "";
+    const json = JSON.parse(jsonString);
 
-    char1 = json.charAt(0);
-    char2 = json.charAt(json.length - 1);
+    const cabecalho = Object.keys(json[0]);
 
-    if(char1 === "{" && char2 === "}"){
+    var csvOutput = json.map((x: any) =>{
+      var cabecalhos = cabecalho.map((y: any) => {
+        return JSON.stringify(x[y])
+      }).join(',');
+      return cabecalhos;
+    });
 
-      var linhasJson = json.slice(1,-1).split(",");
+    csvOutput.unshift(cabecalho.join(','));
+    csvOutput = csvOutput.join('\r\n');
 
-      csvStringOutput = "data;text/csv;charset=utf-8, ";
-      
-      linhasJson.forEach(item => {
-        csvStringOutput = csvStringOutput + item.replace(/['"]+/g,'').trim() + ", \r\n";
-      });
+    return csvOutput;
 
-    }else{
-
-      csvStringOutput = "JSON inválido";
-      
-    }
-    // let propriedades: string[] = [];
-    // let data: {
-    //   propriedade: string,
-    //   valor: string
-    // }[] = [];
-
-    //await linhasJson.forEach((linha,index) => {
-
-      //   if(linha.split(":").length > 1)
-      //     data[index] = {
-      //       propriedade: linha.split(":")[0],
-      //       valor: linha.split(":")[1]
-      //     };
-      //   else
-      //     data[index] = {
-      //       propriedade: "",
-      //       valor: linha
-      //     }
-
-      //   propriedades.push(linha.split(":")[0]);
-      // }
-      
-    //);
-    // propriedades = propriedades.filter((item,index) => propriedades.indexOf(item) === index);
-    
-    // let count = 0; //Contador de item escritos por linhas;
-
-    // if(propriedades.length > 0){
-    //   propriedades.forEach(x => {
-    //     this.csvOutput = this.csvOutput + x + ", ";
-    //   });
-    //   this.csvOutput = this.csvOutput + "\n";
-    //   data.forEach((item, index) => {
-    //     if(count > propriedades.length){
-    //       count = 0;
-    //       this.csvOutput = this.csvOutput + "\n" + item.valor + ", "
-    //     }
-    //     else
-    //     {
-    //       count++;
-    //       this.csvOutput = this.csvOutput + item.valor + ", "
-    //     }
-    //   })
-    // }else{
-    //   data.forEach(item => {
-    //     this.csvOutput = item.valor + ",";
-    //   })
-    // }
-    
-
-    return csvStringOutput;
   }
+
+  // convertJsonToCsv(json: string) : string {
+  //   let csvStringOutput : string = "";
+    
+  //   let char1,char2: string = "";
+
+  //   char1 = json.charAt(0);
+  //   char2 = json.charAt(json.length - 1);
+
+  //   if(char1 === "{" && char2 === "}"){
+
+  //     var linhasJson = json.slice(1,-1).split(",");
+
+  //     csvStringOutput = "data;text/csv;charset=utf-8, ";
+      
+  //     linhasJson.forEach(item => {
+  //       csvStringOutput = csvStringOutput + item.replace(/['"]+/g,'').trim() + ", \r\n";
+  //     });
+
+  //   }else{
+
+  //     csvStringOutput = "JSON inválido";
+      
+  //   }
+  //   // let propriedades: string[] = [];
+  //   // let data: {
+  //   //   propriedade: string,
+  //   //   valor: string
+  //   // }[] = [];
+
+  //   //await linhasJson.forEach((linha,index) => {
+
+  //     //   if(linha.split(":").length > 1)
+  //     //     data[index] = {
+  //     //       propriedade: linha.split(":")[0],
+  //     //       valor: linha.split(":")[1]
+  //     //     };
+  //     //   else
+  //     //     data[index] = {
+  //     //       propriedade: "",
+  //     //       valor: linha
+  //     //     }
+
+  //     //   propriedades.push(linha.split(":")[0]);
+  //     // }
+      
+  //   //);
+  //   // propriedades = propriedades.filter((item,index) => propriedades.indexOf(item) === index);
+    
+  //   // let count = 0; //Contador de item escritos por linhas;
+
+  //   // if(propriedades.length > 0){
+  //   //   propriedades.forEach(x => {
+  //   //     this.csvOutput = this.csvOutput + x + ", ";
+  //   //   });
+  //   //   this.csvOutput = this.csvOutput + "\n";
+  //   //   data.forEach((item, index) => {
+  //   //     if(count > propriedades.length){
+  //   //       count = 0;
+  //   //       this.csvOutput = this.csvOutput + "\n" + item.valor + ", "
+  //   //     }
+  //   //     else
+  //   //     {
+  //   //       count++;
+  //   //       this.csvOutput = this.csvOutput + item.valor + ", "
+  //   //     }
+  //   //   })
+  //   // }else{
+  //   //   data.forEach(item => {
+  //   //     this.csvOutput = item.valor + ",";
+  //   //   })
+  //   // }
+    
+
+  //   return csvStringOutput;
+  // }
 
   exportarParaCsv(): void{
     const blob: Blob = new Blob([this.csvOutput], {type: 'text/csv'});
